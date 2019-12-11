@@ -20,7 +20,7 @@ long long run(vector<long long> instructions, long long input)
         long long A = firstParameterMode ? i + 1 : instructions[i + 1];
         long long B = secondParameterMode ? i + 2 : instructions[i + 2];
         long long C = thirdParameterMode ? i + 3 : instructions[i + 3];
-        
+
         if (firstParameterMode == 2)
         {
             A = instructions[i + 1] + relativeBase;
@@ -29,7 +29,7 @@ long long run(vector<long long> instructions, long long input)
         {
             B = instructions[i + 2] + relativeBase;
         }
-         if (thirdParameterMode == 2)
+        if (thirdParameterMode == 2)
         {
             C = instructions[i + 3] + relativeBase;
         }
@@ -37,13 +37,11 @@ long long run(vector<long long> instructions, long long input)
         if (opcode == 1)
         {
             instructions[C] = instructions[A] + instructions[B];
-
             i += 4;
         }
         else if (opcode == 2)
         {
             instructions[C] = instructions[A] * instructions[B];
-
             i += 4;
         }
         else if (opcode == 3)
