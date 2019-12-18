@@ -24,52 +24,6 @@ long long lcm(long long a, long long b)
     return 1ll * A * B / a;
 }
 
-long long getIndexAfter1000Steps(vector<tuple<long long, long long, long long>> moons)
-{
-    vector<tuple<long long, long long, long long>> velocity(moons.size(), make_tuple(0, 0, 0));
-
-    for (long long stepIndex = 1; ; stepIndex++)
-    {
-        long long kineticEnergy = 0, potentialEnergy = 0, energy = 0;
-        long long moonIndex = -1;
-
-        auto moonsCopy = moons;
-        for_each(moons.begin(), moons.end(), [&](auto moon)
-            {
-                ++moonIndex;
-                for_each(moons.begin(), moons.end(), [&](auto another)
-                    {
-                        if (moon != another)
-                        {
-                            long long x = get<0>(moon) < get<0>(another) ? 1 : get<0>(moon) > get<0>(another) ? -1 : 0;
-                            long long y = get<1>(moon) < get<1>(another) ? 1 : get<1>(moon) > get<1>(another) ? -1 : 0;
-                            long long z = get<2>(moon) < get<2>(another) ? 1 : get<2>(moon) > get<2>(another) ? -1 : 0;
-
-                            get<0>(velocity[moonIndex]) += x;
-                            get<1>(velocity[moonIndex]) += y;
-                            get<2>(velocity[moonIndex]) += z;
-
-                        }
-                    });
-                get<0>(moonsCopy[moonIndex]) += get<0>(velocity[moonIndex]);
-                get<1>(moonsCopy[moonIndex]) += get<1>(velocity[moonIndex]);
-                get<2>(moonsCopy[moonIndex]) += get<2>(velocity[moonIndex]);
-
-                potentialEnergy = abs(get<0>(moons[moonIndex])) + abs(get<1>(moons[moonIndex])) + abs(get<2>(moons[moonIndex]));
-                kineticEnergy = abs(get<0>(velocity[moonIndex])) + abs(get<1>(velocity[moonIndex])) + abs(get<2>(velocity[moonIndex]));
-                energy += kineticEnergy * potentialEnergy;
-            });
-        moons = moonsCopy;
-
-        if (stepIndex == 1000)
-        {
-            return energy;
-        }
-
-    }
-}
-
-
 void SolvePart1And2(vector<tuple<long long, long long, long long>> moons)
 {
     int stepIndex = 0;
