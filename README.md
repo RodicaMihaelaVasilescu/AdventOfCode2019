@@ -23,5 +23,7 @@
 ##### --- Day 20: Donut Maze ---
 ##### --- Day 21: Springdroid Adventure ---
 ##### --- Day 22: Slam Shuffle ---
+##### --- Day 23: Category Six ---
+##### --- Day 24: Planet of Discord ---
 
 ![alt text](AdventOfCode.png)
