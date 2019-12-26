@@ -20,7 +20,6 @@ long long lcm(long long a, long long b)
         a = b;
         b = r;
     }
-
     return 1ll * A * B / a;
 }
 
@@ -29,12 +28,12 @@ void SolvePart1And2(vector<tuple<long long, long long, long long>> moons)
     int stepIndex = 0;
 
     vector<tuple<long long, long long, long long>> velocity(moons.size(), make_tuple(0, 0, 0));
-    map<long long, long long> fr;
+    map<int, long long> frequency; // fr[0] - number of steps until x column repeats, etc..  
 
     auto moonsInitialStates = moons;
-    auto velocityInitialStates = velocity;
+    auto initialVelocities = velocity;
 
-    while (fr[0] == 0 || fr[1] == 0 || fr[2] == 0)
+    while (frequency[0] == 0 || frequency[1] == 0 || frequency[2] == 0)
     {
         stepIndex++;
         long long kineticEnergy = 0, potentialEnergy = 0, energy = 0;
@@ -55,7 +54,6 @@ void SolvePart1And2(vector<tuple<long long, long long, long long>> moons)
                             get<0>(velocity[moonIndex]) += x;
                             get<1>(velocity[moonIndex]) += y;
                             get<2>(velocity[moonIndex]) += z;
-
                         }
                     });
 
@@ -76,32 +74,32 @@ void SolvePart1And2(vector<tuple<long long, long long, long long>> moons)
         }
 
         map<int, bool> doesCoordinateDiffer;
-        for (long long i = 0; i < 4; i++)
+        for (int i = 0; i < moons.size(); i++)
         {
-            if (get<0>(moons[i]) != get<0>(moonsInitialStates[i]) || get<0>(velocity[i]) != get<0>(velocityInitialStates[i]))
+            if (get<0>(moons[i]) != get<0>(moonsInitialStates[i]) || get<0>(velocity[i]) != get<0>(initialVelocities[i]))
             {
                 doesCoordinateDiffer[0] = true;
             }
-            if (get<1>(moons[i]) != get<1>(moonsInitialStates[i]) || get<1>(velocity[i]) != get<1>(velocityInitialStates[i]))
+            if (get<1>(moons[i]) != get<1>(moonsInitialStates[i]) || get<1>(velocity[i]) != get<1>(initialVelocities[i]))
             {
                 doesCoordinateDiffer[1] = true;
             }
-            if (get<2>(moons[i]) != get<2>(moonsInitialStates[i]) || get<2>(velocity[i]) != get<2>(velocityInitialStates[i]))
+            if (get<2>(moons[i]) != get<2>(moonsInitialStates[i]) || get<2>(velocity[i]) != get<2>(initialVelocities[i]))
             {
                 doesCoordinateDiffer[2] = true;
             }
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) // for x, y, z columns
         {
-            if (!doesCoordinateDiffer[i] && fr[i] == 0)
+            if (!doesCoordinateDiffer[i] && frequency[i] == 0)
             {
-                fr[i] = stepIndex;
+                frequency[i] = stepIndex;
             }
         }
     }
 
-    cout << "Part 2: " << lcm(fr[0], lcm(fr[1], fr[2])) << endl;
+    cout << "Part 2: " << lcm(frequency[0], lcm(frequency[1], frequency[2])) << endl;
 }
 
 int main()
