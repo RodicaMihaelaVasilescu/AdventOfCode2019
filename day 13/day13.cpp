@@ -16,7 +16,7 @@ using namespace std;
 
 #define SCORE_COORDINATES make_pair(-1,0)
 
-vector<long long > input, output;
+vector<long long> input, output;
 
 bool runInstructions(vector<long long> initialInstructions)
 {
@@ -129,7 +129,7 @@ void SolvePart1AndPart2(vector<long long> instructions)
     instructions[0] = 2;
     int score = 0;
     bool isGameFinished = false;
-    vector<pair<int, int>> blocks, balls, horizontalPaddle;
+    vector<pair<int, int>> blocks, balls, horizontalPaddles;
 
     do
     {
@@ -147,7 +147,7 @@ void SolvePart1AndPart2(vector<long long> instructions)
             }
             else if (tile == HORIZONTAL_PADDLE)
             {
-                horizontalPaddle.push_back({ x,y });
+                horizontalPaddles.push_back({ x,y });
             }
             else if (tile == BALL)
             {
@@ -159,7 +159,7 @@ void SolvePart1AndPart2(vector<long long> instructions)
                 score = tile;
             }
         }
-        input.push_back(horizontalPaddle.back().first < balls.back().first ? 1 : horizontalPaddle.back().first > balls.back().first ? -1 : 0);
+        input.push_back(horizontalPaddles.back().first < balls.back().first ? 1 : horizontalPaddles.back().first > balls.back().first ? -1 : 0);
         output.clear();
 
     } while (!isGameFinished);
