@@ -13,7 +13,6 @@ using namespace std;
 
 #define START "AA"
 #define FINISH "ZZ"
-#define VISITED 'v'
 
 #define LEFT 0
 #define RIGHT 1
