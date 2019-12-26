@@ -12,20 +12,16 @@ using namespace std;
 #define DOWN 2
 #define UP 3
 
-//            L  R  D  U  
-int row[] = { 0, 1, 0, -1 };
-int col[] = { -1, 0, 1, 0 };
+vector<long long> input, output;
 
-map <pair<int, int>, bool> panelColors; // 0 -> black; 1 -> white
-int x = 0, y = 0, currentDirection = UP;
-int xMin = INT_MAX, yMin = INT_MAX, xMax = INT_MIN, yMax = INT_MIN;
+bool runInstructions(vector<long long> initialInstructions)
+{
+    static auto instructions = initialInstructions;
+    static long long i = 0;
+    static long long relativeBase = 0;
+    static long long inputIndex = 0;
 
-vector<long long > input, output;
-long long inputIndex, outputIndex;
-
-bool runInstructions(long long& i, vector<long long >& instructions, long long& relativeBase) {
-
-    for (;;)
+    while (true)
     {
         long long opcode = instructions[i] % 100;
 
@@ -33,22 +29,9 @@ bool runInstructions(long long& i, vector<long long >& instructions, long long& 
         long long secondParameterMode = instructions[i] / 1000 % 10;
         long long thirdParameterMode = instructions[i] / 10000;
 
-        long long A = firstParameterMode ? i + 1 : instructions[i + 1];
-        long long B = secondParameterMode ? i + 2 : instructions[i + 2];
-        long long C = thirdParameterMode ? i + 3 : instructions[i + 3];
-
-        if (firstParameterMode == 2)
-        {
-            A = instructions[i + 1] + relativeBase;
-        }
-        if (secondParameterMode == 2)
-        {
-            B = instructions[i + 2] + relativeBase;
-        }
-        if (thirdParameterMode == 2)
-        {
-            C = instructions[i + 3] + relativeBase;
-        }
+        long long A = firstParameterMode == 1 ? i + 1 : firstParameterMode == 0 ? instructions[i + 1] : instructions[i + 1] + relativeBase;
+        long long B = secondParameterMode == 1 ? i + 2 : secondParameterMode == 0 ? instructions[i + 2] : instructions[i + 2] + relativeBase;
+        long long C = thirdParameterMode == 1 ? i + 3 : thirdParameterMode == 0 ? instructions[i + 3] : instructions[i + 3] + relativeBase;
 
         if (opcode == 1)
         {
@@ -137,50 +120,50 @@ bool runInstructions(long long& i, vector<long long >& instructions, long long& 
     }
 }
 
-void moveRobot(int color, int direction)
+void SolvePart1AndPart2(vector<long long> instructions)
 {
-    panelColors[{x, y}] = color;
+    //            L  R  D  U  
+    int row[] = { 0, 1, 0, -1 };
+    int col[] = { -1, 0, 1, 0 };
 
-    if (direction == LEFT) {
-        currentDirection -= 3;
-    }
-    else if (direction == RIGHT)
-    {
-        currentDirection -= 1;
-    }
-    currentDirection += 4;
-    currentDirection %= 4;
+    map <pair<int, int>, bool> panelColors; // 0 -> black; 1 -> white
+    int x = 0, y = 0, currentDirection = UP;
+    int xMin = INT_MAX, yMin = INT_MAX, xMax = INT_MIN, yMax = INT_MIN;
 
-    x += row[currentDirection];
-    y += col[currentDirection];
+    long long outputIndex = 0;
 
-    xMin = min(x, xMin);
-    yMin = min(y, yMin);
-    xMax = max(x, xMax);
-    yMax = max(y, yMax);
-
-    input.push_back(panelColors[{ x, y }]);
-}
-
-void SolvePart1(vector<long long> instructions)
-{
     panelColors[{x, y}] = true;
     input.push_back(panelColors[{x, y}]);
 
-    long long i = 0, relativeBase = 0;
-
-    while (!runInstructions(i, instructions, relativeBase))
+    while (!runInstructions(instructions))
     {
         int color = output[outputIndex++];
         int direction = output[outputIndex++];
 
-        moveRobot(color, direction);
+        panelColors[{x, y}] = color;
+
+        if (direction == LEFT) {
+            currentDirection -= 3;
+        }
+        else if (direction == RIGHT)
+        {
+            currentDirection -= 1;
+        }
+        currentDirection += 4;
+        currentDirection %= 4;
+
+        x += row[currentDirection];
+        y += col[currentDirection];
+
+        xMin = min(x, xMin);
+        yMin = min(y, yMin);
+        xMax = max(x, xMax);
+        yMax = max(y, yMax);
+
+        input.push_back(panelColors[{ x, y }]);
     }
     cout << "Part 1: " << panelColors.size() << endl;
-}
 
-void SolvePart2()
-{
     cout << "Part 2: \n";
     for (int i = xMin; i <= xMax; i++)
     {
@@ -209,6 +192,5 @@ int main()
 
     instructions.resize(10000, 0);
 
-    SolvePart1(instructions);
-    SolvePart2();
+    SolvePart1AndPart2(instructions);
 }
