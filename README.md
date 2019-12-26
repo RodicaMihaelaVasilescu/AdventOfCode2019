@@ -25,5 +25,6 @@
 ##### --- Day 22: Slam Shuffle ---
 ##### --- Day 23: Category Six ---
 ##### --- Day 24: Planet of Discord ---
+##### --- Day 25: Cryostasis ---
 
 ![alt text](AdventOfCode.png)
