@@ -17,22 +17,9 @@ long long run(vector<long long> instructions, long long input)
         long long secondParameterMode = instructions[i] / 1000 % 10;
         long long thirdParameterMode = instructions[i] / 10000;
 
-        long long A = firstParameterMode ? i + 1 : instructions[i + 1];
-        long long B = secondParameterMode ? i + 2 : instructions[i + 2];
-        long long C = thirdParameterMode ? i + 3 : instructions[i + 3];
-
-        if (firstParameterMode == 2)
-        {
-            A = instructions[i + 1] + relativeBase;
-        }
-        if (secondParameterMode == 2)
-        {
-            B = instructions[i + 2] + relativeBase;
-        }
-        if (thirdParameterMode == 2)
-        {
-            C = instructions[i + 3] + relativeBase;
-        }
+        long long A = firstParameterMode == 1 ? i + 1 : firstParameterMode == 0 ? instructions[i + 1] : instructions[i + 1] + relativeBase;
+        long long B = secondParameterMode == 1 ? i + 2 : secondParameterMode == 0 ? instructions[i + 2] : instructions[i + 2] + relativeBase;
+        long long C = thirdParameterMode == 1 ? i + 3 : thirdParameterMode == 0 ? instructions[i + 3] : instructions[i + 3] + relativeBase;
 
         if (opcode == 1)
         {
