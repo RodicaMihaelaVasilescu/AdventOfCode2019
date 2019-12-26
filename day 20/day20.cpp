@@ -71,7 +71,6 @@ int BFS(vector<string> maze)
     }
 }
 
-
 int BFS2(vector<string> maze)
 {
     // vector of mazes. index of the vector reprezents the level
