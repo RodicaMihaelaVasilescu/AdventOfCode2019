@@ -37,7 +37,6 @@ int CountVisibileAsteroids(pair<int, int> currentAsteroid, vector<pair<int, int>
 
 int getThe200thIndex(pair<int, int> currentAsteroid, vector<pair<int, int>> allAsteroids)
 {
-    int index = 0;
     map<pair<int, int>, bool> removed;
 
     while (true)
@@ -49,8 +48,8 @@ int getThe200thIndex(pair<int, int> currentAsteroid, vector<pair<int, int>> allA
             {
                 if (currentAsteroid != asteroid && !removed[asteroid])
                 {
-                    float angle = 360 - atan2(asteroid.second - currentAsteroid.second, asteroid.first - 
-                        currentAsteroid.first)* 180 / PI;  // clockwise angle
+                    float angle = 360 - atan2(asteroid.second - currentAsteroid.second, asteroid.first -
+                        currentAsteroid.first) * 180 / PI;  // clockwise angle
 
                     if (!isAngleUsed[angle])
                     {
@@ -68,6 +67,7 @@ int getThe200thIndex(pair<int, int> currentAsteroid, vector<pair<int, int>> allA
                 }
             });
 
+        int index = 0;
         for (auto angle : angleCoordinates)
         {
             index++;
@@ -79,8 +79,8 @@ int getThe200thIndex(pair<int, int> currentAsteroid, vector<pair<int, int>> allA
             }
         }
     }
-
 }
+
 int main()
 {
     freopen("in.txt", "r", stdin);
@@ -88,13 +88,13 @@ int main()
 
     vector<pair<int, int>> allAsteroids;
 
-    string line;
+    string inputLine;
     int lineIndex = 0;
-    while (cin >> line)
+    while (cin >> inputLine)
     {
-        for (int column = 0; line[column] != 0; column++)
+        for (int column = 0; inputLine[column] != 0; column++)
         {
-            if (line[column] != '.')
+            if (inputLine[column] != '.')
             {
                 allAsteroids.push_back({ lineIndex, column });
             }
