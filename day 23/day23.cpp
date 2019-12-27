@@ -128,7 +128,7 @@ void SolvePart1AndPart2(vector<long long> instructions)
     {
         static int index = 0;
         packet.input.push(index++);
-        packet.input.push(-1); // if no packet is waiting, input instructions should receive -1
+        packet.input.push(-1); // "if no packet is waiting, input instructions should receive -1"
         packet.instructions = instructions;
         runInstructions(packet.instructionIndex, packet.instructions, packet.relativeBase, packet.input, packet.output);
     }
@@ -171,7 +171,7 @@ void SolvePart1AndPart2(vector<long long> instructions)
              "If all computers have empty incoming packet queues and are continuously trying
              to receive packets without sending packets, the network is considered idle."
         */
-        auto packetWithInput = find_if_not(packets.begin(), packets.end(), [](auto& packet)
+        auto packetWithInput = find_if_not(packets.begin(), packets.end(), [](auto packet)
             {
                 return packet.input.empty();
             });
