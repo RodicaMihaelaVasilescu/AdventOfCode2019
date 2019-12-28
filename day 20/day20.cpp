@@ -14,24 +14,14 @@ using namespace std;
 #define START "AA"
 #define FINISH "ZZ"
 
-#define LEFT 0
-#define RIGHT 1
-#define DOWN 2
-#define UP 3
-
-//             L  R  D  U  
-int row[] = { 0, 0, 1, -1 };
-int col[] = { -1, 1, 0, 0 };
-
-//                    R  L  U  D  
-int oppositeRow[] = { 0, 0, -1, 1 };
-int oppositeCol[] = { 1, -1, 0, 0 };
+//            L  R  D  U                       R  L  U  D  
+int row[] = { 0, 0, 1, -1 }, oppositeRow[] = { 0, 0, -1, 1 };
+int col[] = { -1, 1, 0, 0 }, oppositeCol[] = { 1, -1, 0, 0 };
 
 map <pair<int, int>, string> portalCoordinates_Name;
 map <string, pair<int, int>> portalName_Coordinates;
 map <pair<int, int>, pair<int, int>> teleport;
 map<pair<int, int>, bool> isInnerPortal;
-
 
 int BFS(vector<string> maze)
 {
@@ -59,7 +49,7 @@ int BFS(vector<string> maze)
                 if (teleport[next] != make_pair(0, 0)) // if there is a portal
                 {
                     // goes through portal
-                    coordinates.push({ teleport[next], step + 2 }); 
+                    coordinates.push({ teleport[next], step + 2 });
                 }
                 else
                 {
