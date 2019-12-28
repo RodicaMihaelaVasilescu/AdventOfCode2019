@@ -1,4 +1,7 @@
 # Advent Of Code 2019
+
+![alt text](AdventOfCode.png)
+
 [Advent of code](https://adventofcode.com/)
 
 ##### --- Day 1: The Tyranny of the Rocket Equation ---
@@ -26,5 +29,3 @@
 ##### --- Day 23: Category Six ---
 ##### --- Day 24: Planet of Discord ---
 ##### --- Day 25: Cryostasis ---
-
-![alt text](AdventOfCode.png)
