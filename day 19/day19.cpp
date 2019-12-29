@@ -12,12 +12,12 @@ using namespace std;
 
 bool runInstructions(vector<long long> instructions, pair<int, int> start)
 {
-    bool firstCoordinateInInput = false;
-    bool secondCoordinateInInput = false;
-
     long long i = 0;
     long long relativeBase = 0;
     long long inputIndex = 0;
+	
+	bool firstCoordinateInInput = false;
+    bool secondCoordinateInInput = false;
 
     while (true)
     {
