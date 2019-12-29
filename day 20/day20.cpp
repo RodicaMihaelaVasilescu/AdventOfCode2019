@@ -18,42 +18,41 @@ using namespace std;
 int row[] = { 0, 0, 1, -1 }, oppositeRow[] = { 0, 0, -1, 1 };
 int col[] = { -1, 1, 0, 0 }, oppositeCol[] = { 1, -1, 0, 0 };
 
-map <pair<int, int>, string> portalCoordinates_Name;
-map <string, pair<int, int>> portalName_Coordinates;
+pair<int, int> startCoordinates, finishCoordinates;
 map <pair<int, int>, pair<int, int>> teleport;
 map<pair<int, int>, bool> isInnerPortal;
 
 int BFS(vector<string> maze)
 {
-    queue<tuple<pair<int, int>, int>> coordinates; // queue of coordinates and step
-    coordinates.push({ portalName_Coordinates[START], 0 });
+    queue<tuple<pair<int, int>, int>> coordinatesQueue; // queue of coordinates and step
+    coordinatesQueue.push({ startCoordinates, 0 });
 
-    while (!coordinates.empty())
+    while (!coordinatesQueue.empty())
     {
-        auto current = get<0>(coordinates.front());
-        auto step = get<1>(coordinates.front());
-        coordinates.pop();
+        auto coordinates = get<0>(coordinatesQueue.front());
+        auto step = get<1>(coordinatesQueue.front());
+        coordinatesQueue.pop();
 
-        if (current == portalName_Coordinates[FINISH])
+        if (coordinates == finishCoordinates)
         {
             return step;
         }
 
-        maze[current.first][current.second] = 'v'; // this location is visited
+        maze[coordinates.first][coordinates.second] = 'v'; // this location is visited
         for (int direction = 0; direction < 4; direction++)
         {
-            pair<int, int> next = { current.first + row[direction], current.second + col[direction] };
+            pair<int, int> next = { coordinates.first + row[direction], coordinates.second + col[direction] };
 
             if (maze[next.first][next.second] == '.')
             {
                 if (teleport[next] != make_pair(0, 0)) // if there is a portal
                 {
                     // goes through portal
-                    coordinates.push({ teleport[next], step + 2 });
+                    coordinatesQueue.push({ teleport[next], step + 2 });
                 }
                 else
                 {
-                    coordinates.push({ next, step + 1 });
+                    coordinatesQueue.push({ next, step + 1 });
                 }
             }
         }
@@ -62,46 +61,46 @@ int BFS(vector<string> maze)
 
 int BFS2(vector<string> maze)
 {
-    // vector of mazes. index of the vector reprezents the level
+    // vector of mazes. the index of the vector reprezents the level
     vector<vector<string>>level_maze(30, maze); // I supposed there are maximum 30 levels
 
     auto initialMaze = maze;
 
-    queue<tuple<pair<int, int>, int, int>> coordinates; // queue of coordinates, step, level
-    coordinates.push({ portalName_Coordinates[START], 0, 0 });
+    queue<tuple<pair<int, int>, int, int>> coordinatesQueue; // queue of coordinates, step, level
+    coordinatesQueue.push({ startCoordinates, 0, 0 });
 
-    while (!coordinates.empty())
+    while (!coordinatesQueue.empty())
     {
-        auto current = get<0>(coordinates.front());
-        auto step = get<1>(coordinates.front());
-        auto level = get<2>(coordinates.front());
-        coordinates.pop();
+        auto coordinates = get<0>(coordinatesQueue.front());
+        auto step = get<1>(coordinatesQueue.front());
+        auto level = get<2>(coordinatesQueue.front());
+        coordinatesQueue.pop();
 
         if (level < 0 || level > 29)
         {
             continue;
         }
 
-        if (current == portalName_Coordinates[FINISH] && level == 0)
+        if (coordinates == finishCoordinates && level == 0)
         {
             return step;
         }
 
-        level_maze[level][current.first][current.second] = 'v'; // this location is visited
+        level_maze[level][coordinates.first][coordinates.second] = 'v'; // this location is visited
         for (int direction = 0; direction < 4; direction++)
         {
-            pair<int, int> next = { current.first + row[direction], current.second + col[direction] };
+            pair<int, int> next = { coordinates.first + row[direction], coordinates.second + col[direction] };
 
             if (level_maze[level][next.first][next.second] == '.')
             {
                 if (teleport[next] != make_pair(0, 0)) // if there is a portal
                 {
                     //goes through portal
-                    coordinates.push({ teleport[next], step + 2, isInnerPortal[next] ? level + 1 : level - 1 });
+                    coordinatesQueue.push({ teleport[next], step + 2, isInnerPortal[next] ? level + 1 : level - 1 });
                 }
                 else
                 {
-                    coordinates.push({ next ,step + 1, level });
+                    coordinatesQueue.push({ next ,step + 1, level });
                 }
             }
         }
@@ -110,8 +109,10 @@ int BFS2(vector<string> maze)
 
 void setPortalNamesAndTeleports(vector<string>input)
 {
+    map <string, pair<int, int>> portalName_Coordinates;
     int n = input.size();
     int m = input[0].size();
+
     for (int i = 1; i < n - 1; i++)
     {
         for (int j = 1; j < m - 1; j++)
@@ -134,11 +135,22 @@ void setPortalNamesAndTeleports(vector<string>input)
                         coordinates = oppositeNeighbour;
                     }
                 }
-                portalCoordinates_Name[coordinates] = name;
+
                 isInnerPortal[coordinates] = coordinates.first != 2 && coordinates.first != n - 3 &&
                     coordinates.second != 2 && coordinates.second != m - 3;
-                teleport[coordinates] = portalName_Coordinates[name];
-                teleport[portalName_Coordinates[name]] = coordinates;
+                if (name == START)
+                {
+                    startCoordinates = coordinates;
+                }
+                if (name == FINISH)
+                {
+                    finishCoordinates = coordinates;
+                }
+
+                auto correspondingCoordinates = portalName_Coordinates[name];
+                teleport[correspondingCoordinates] = coordinates;
+                teleport[coordinates] = correspondingCoordinates;
+
                 portalName_Coordinates[name] = coordinates;
             }
         }
