@@ -6,11 +6,11 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+
 using namespace std;
 
 string solvePart1(string input)
 {
-
     int nr = 100;
     while (nr--)
     {
@@ -71,5 +71,4 @@ int main()
 
     cout << "Part 1: " << solvePart1(input) << endl;
     cout << "Part 2: " << solvePart2(input) << endl;
-
 }
